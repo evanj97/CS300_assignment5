@@ -37,13 +37,13 @@ struct map
 	{
 		return key == in.key;
 	}
-	map& operator=(const map& in)
-	{
-		map temp;
-		temp.key = in.key;
-		temp.val = in.val;
-		return temp;
-	}
+//	map& operator=(const map& in)
+//	{
+//		map temp;
+//		temp.key = in.key;
+//		temp.val = in.val;
+//		return temp;
+//	}
 
 };
 
@@ -51,22 +51,22 @@ class BarcodeIndex
 {
 private:
 	BinaryTree<map>* tree;
+
 	map* arr;
+
 	int count;
-	int DataSetLimit;
 
 public:
-	BarcodeIndex(int);
+	BarcodeIndex();
 	bool readFile(string);
 	void search(clock_t&, clock_t&, string&, string&);
 };
 
-BarcodeIndex::BarcodeIndex(int in) // Constructor
+BarcodeIndex::BarcodeIndex() // Constructor
 {
 	tree = new BinaryTree<map>();
 	arr = new map[1100000];
 	count = 0;
-	DataSetLimit = in;
 }
 
 bool BarcodeIndex::readFile(string _fileName) // reads file
@@ -76,6 +76,7 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 	count = 0;
 
 	map temp;
+
 	ifstream inFile;
 
 	inFile.open(_fileName);
@@ -89,7 +90,7 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 
 	cout << "file successfully loaded" << endl;
 
-	while (inFile.good() && count < DataSetLimit) // read file and store entries in objects pointed to by array
+	while (inFile.good()) // read file and store entries in objects pointed to by array
 	{
 		getline(inFile, code, ',');
 		getline(inFile, desc);
@@ -101,9 +102,8 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 		count++;
 		tree->insert(temp); // add item to BST
 
-		if (count % 1000 == 0) // debug
-			cout << count << endl;
 	}
+	cout << count << endl;
 	inFile.close();
 
 	cout << "Finished loading file. " << count << " elements loaded." << endl;

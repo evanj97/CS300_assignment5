@@ -32,7 +32,7 @@ int main()
 	string desc;
 	string UPC;
 
-	BarcodeIndex* ind = new BarcodeIndex(10000); // param is # of UPCs to load
+	BarcodeIndex* ind = new BarcodeIndex(); // param is # of UPCs to load
 
 	ind->readFile("upc_corpus.txt"); // file name
 
