@@ -17,6 +17,15 @@
 #include <array>
 #include "LinkedList.h"
 
+/*
+ *
+ * DEPRECIATED
+ *
+ *
+ *
+ *
+ */
+
 using namespace std;
 
 struct map

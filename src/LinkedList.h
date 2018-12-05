@@ -43,6 +43,7 @@ public:
 	void insertLast(T&); // insert new node at the end
 	bool deleteNode(T&); // hello
 	void destroylist(); // deletes all nodes in list
+	T& search(T&);
 
 	LinkedList<T>& operator=(LinkedList<T>&); // set another list = to this
 	template<class U>
@@ -160,6 +161,29 @@ void LinkedList<T>::destroylist() // deletes all nodes in list
 	}
 	last = NULL;
 	count = 0;
+}
+
+template<class T>
+T& LinkedList<T>::search(T& item)
+{
+	if (head == NULL)
+		return item;
+
+	node<T>* p = head; // cursor to move down list
+
+	while (p != NULL)
+	{
+		if (p->data == item) // if item found, return data
+			return p->data;
+
+		else
+			// if item not found
+			p = p->next; // move down list
+	}
+
+	//if item not found in list
+	return item;
+
 }
 
 template<class T>

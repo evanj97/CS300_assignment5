@@ -29,6 +29,7 @@ int main()
 {
 	clock_t arrayTime;
 	clock_t treeTime;
+	clock_t hashTime;
 	string desc;
 	string UPC;
 
@@ -41,11 +42,12 @@ int main()
 		cout << "UPC Code: " << endl; // take UPC code
 		cin >> UPC;
 
-		ind->search(arrayTime, treeTime, desc, UPC); // perform searches
+		ind->search(arrayTime, treeTime, hashTime, desc, UPC); // perform searches
 
-		cout << desc << endl;
-		cout << "BST Time: " << treeTime << endl;
-		cout << "Array Time: " << arrayTime << endl << endl; // print results
+		cout << desc;
+		cout << "BST Time: 	 " << treeTime << endl;
+		cout << "Array Time: " << arrayTime << endl; // print results
+		cout << "Hash Time:  " << hashTime << endl << endl << endl;
 
 	}
 

@@ -19,6 +19,7 @@
 #include <fstream>
 #include <time.h>
 #include <array>
+#include "LinkedList.h"
 
 struct map
 {
@@ -37,13 +38,10 @@ struct map
 	{
 		return key == in.key;
 	}
-//	map& operator=(const map& in)
-//	{
-//		map temp;
-//		temp.key = in.key;
-//		temp.val = in.val;
-//		return temp;
-//	}
+	bool isSame(const map& in)
+	{
+		return key == in.key && val == in.val;
+	}
 
 };
 
@@ -51,15 +49,20 @@ class BarcodeIndex
 {
 private:
 	BinaryTree<map>* tree;
-
 	map* arr;
-
+	LinkedList<map> hashTable[1000];
 	int count;
 
 public:
 	BarcodeIndex();
 	bool readFile(string);
-	void search(clock_t&, clock_t&, string&, string&);
+	void search(clock_t&, clock_t&, clock_t&, string&, string&);
+
+private:
+	int hashFunction(string);
+	void hashAdd(map);
+	map hashGet(map);
+
 };
 
 BarcodeIndex::BarcodeIndex() // Constructor
@@ -90,7 +93,7 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 
 	cout << "file successfully loaded" << endl;
 
-	while (inFile.good()) // read file and store entries in objects pointed to by array
+	while (inFile.good()) // read file and store entries in objects in array, BST, and hash
 	{
 		getline(inFile, code, ',');
 		getline(inFile, desc);
@@ -101,44 +104,74 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 		arr[count] = temp; // add item to array
 		count++;
 		tree->insert(temp); // add item to BST
+		hashAdd(temp); // add item to hash table
 
 	}
 	cout << count << endl;
 	inFile.close();
 
-	cout << "Finished loading file. " << count << " elements loaded." << endl;
+	cout << "Finished loading file. " << count << " elements loaded." << endl << endl;
 
 	return true;
 }
 
 // performs searches
-void BarcodeIndex::search(clock_t& arrayTime, clock_t& treeTime, string& description, string& UPC)
+void BarcodeIndex::search(clock_t& arrayTime, clock_t& treeTime, clock_t& hashTime, string& desc,
+		string& UPC)
 {
-
-	arrayTime = clock(); // start array timer
-
-	for (int i = 0; i < count; i++) // linear search
-	{
-		if (arr[i].key == UPC) // if item found, grab description, break
-		{
-			description = arr[i].val;
-			break;
-		}
-	}
-	arrayTime = clock() - arrayTime; // stop array timer
 
 	map tempMap; // temporary map object to search for
 	tempMap.key = UPC;
 	tempMap.val = "";
 
-	treeTime = clock(); // start BST timer
+	// Array Search
+	arrayTime = clock(); // start array timer
+	for (int i = 0; i < count; i++) // linear search
+	{
+		if (arr[i].key == UPC) // if item found, grab description, break
+		{
+			desc = arr[i].val;
+			break;
+		}
+	}
+	arrayTime = clock() - arrayTime; // stop array timer
 
-	tree->search(tempMap); // perform search
+	// BST Search
+	treeTime = clock();
+	tree->search(tempMap);
+	treeTime = clock() - treeTime;
 
-	treeTime = clock() - treeTime; // stop BST timer
+	// Hash Table Search
+	hashTime = clock();
+	hashGet(tempMap);
+	hashTime = clock() - hashTime;
 
-//BST
+}
 
+int BarcodeIndex::hashFunction(string in) // hash function, will return # from 0-999 inclusive
+{
+	int sum = 0;
+	for (int i = 0; i < in.length(); i++)
+	{
+		sum += in[i];
+	}
+	return sum % 1000;
+}
+
+void BarcodeIndex::hashAdd(map in)
+{
+	hashTable[hashFunction(in.key)].insertLast(in);
+}
+
+map BarcodeIndex::hashGet(map in)
+{
+	map temp;
+	temp = hashTable[hashFunction(in.key)].search(in);
+
+	if (!in.isSame(temp))
+		return temp;
+	else
+		return in;
 }
 
 #endif /* BARCODEINDEX_H_ */
