@@ -1,8 +1,8 @@
 /*
  * Evan Johnson
  * CS300 Fall 2018
- * 21 November, 2018
- * Assignment 4
+ * 5 December, 2018
+ * Assignment 5
  *
  * BinaryTree.h
  */
@@ -35,6 +35,7 @@ public:
 	BinaryTree()
 	{
 		treeRoot = NULL;
+		count = 0;
 	}
 
 	void insert(T& item); // initial root state, calls recursive insert()

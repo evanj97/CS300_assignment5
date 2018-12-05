@@ -1,11 +1,10 @@
 /*
  * Evan Johnson
  * CS300 Fall 2018
- * 21 November, 2018
- * Assignment 4
+ * 5 December, 2018
+ * Assignment 5
  *
  * BarcodeIndex.h
- *
  */
 
 #ifndef BARCODEINDEX_H_
@@ -38,7 +37,7 @@ struct map
 	{
 		return key == in.key;
 	}
-	bool isSame(const map& in)
+	bool isSame(const map& in) // needed for LinkedList search, used in hashGet()
 	{
 		return key == in.key && val == in.val;
 	}
@@ -78,7 +77,7 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 	string desc = "";
 	count = 0;
 
-	map temp;
+	map temp; // temporary object
 
 	ifstream inFile;
 
@@ -107,7 +106,6 @@ bool BarcodeIndex::readFile(string _fileName) // reads file
 		hashAdd(temp); // add item to hash table
 
 	}
-	cout << count << endl;
 	inFile.close();
 
 	cout << "Finished loading file. " << count << " elements loaded." << endl << endl;
@@ -158,12 +156,12 @@ int BarcodeIndex::hashFunction(string in) // hash function, will return # from 0
 	return sum % 1000;
 }
 
-void BarcodeIndex::hashAdd(map in)
+void BarcodeIndex::hashAdd(map in) // adds item to hash table where necessary
 {
 	hashTable[hashFunction(in.key)].insertLast(in);
 }
 
-map BarcodeIndex::hashGet(map in)
+map BarcodeIndex::hashGet(map in) // gets item from hash table
 {
 	map temp;
 	temp = hashTable[hashFunction(in.key)].search(in);

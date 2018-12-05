@@ -1,12 +1,10 @@
 /*
  * Evan Johnson
- * LinkedList.h
  * CS300 Fall 2018
+ * 5 December, 2018
  * Assignment 5
- * Due: 12 Nov, 2018
  *
- * Version: 1.1
- *
+ * LinkedList.h
  */
 
 #ifndef LINKEDLIST_H_
